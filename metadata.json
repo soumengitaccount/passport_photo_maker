@@ -1,0 +1,6 @@
+{
+  "name": "Passport Photo Maker",
+  "description": "Take or upload a photo, select and remove the background with an interactive magnetic lasso tool, add a background color, crop to Indian passport or stamp size, and print in an A4 grid.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
