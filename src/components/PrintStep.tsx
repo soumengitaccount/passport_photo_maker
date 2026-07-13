@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Printer, Grid, RefreshCw, LayoutGrid, Check, Settings, ShieldAlert, ArrowLeft } from 'lucide-react';
+import { Printer, Grid, RefreshCw, LayoutGrid, Check, Settings, ShieldAlert, ArrowLeft, Download } from 'lucide-react';
 import { motion } from 'motion/react';
 
 interface PrintStepProps {
@@ -17,6 +17,20 @@ export default function PrintStep({ passportSrc, stampSrc, onBack, onReset }: Pr
   const [photoGap, setPhotoGap] = useState<number>(4); // in mm
   const [showCutLines, setShowCutLines] = useState<boolean>(true);
   const [sheetLayout, setSheetLayout] = useState<'START' | 'CENTER'>('START'); // Starting alignment vs Center
+
+  // Download single image handler
+  const handleDownloadSingle = (srcUrl: string, filename: string) => {
+    try {
+      const link = document.createElement('a');
+      link.href = srcUrl;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (err) {
+      console.error('Download failed:', err);
+    }
+  };
 
   // Combo templates
   const applyTemplate = (type: 'COMBO' | 'PASSPORT_MAX' | 'STAMP_MAX' | 'MINI') => {
@@ -417,6 +431,27 @@ export default function PrintStep({ passportSrc, stampSrc, onBack, onReset }: Pr
                 }`}
               >
                 {showCutLines ? '✓ Border Lines' : 'No Borders'}
+              </button>
+            </div>
+          </div>
+
+          {/* Single PNG Photo Download */}
+          <div className="bg-slate-950/40 p-2.5 rounded-xl border border-slate-850 space-y-2">
+            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-wider block">Download Single Photo (PNG)</span>
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                onClick={() => handleDownloadSingle(passportSrc, 'passport-photo-35x45.png')}
+                className="py-2 px-2.5 rounded-lg text-[10px] bg-slate-900 border border-slate-800 hover:border-slate-700 text-indigo-400 hover:text-white font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-sm"
+              >
+                <Download size={12} />
+                <span>Passport (35x45mm)</span>
+              </button>
+              <button
+                onClick={() => handleDownloadSingle(stampSrc, 'stamp-photo-20x25.png')}
+                className="py-2 px-2.5 rounded-lg text-[10px] bg-slate-900 border border-slate-800 hover:border-slate-700 text-indigo-400 hover:text-white font-bold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-sm"
+              >
+                <Download size={12} />
+                <span>Stamp (20x25mm)</span>
               </button>
             </div>
           </div>

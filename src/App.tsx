@@ -6,6 +6,7 @@ import BackgroundStep from './components/BackgroundStep';
 import CropStep from './components/CropStep';
 import PrintStep from './components/PrintStep';
 import { AnimatePresence, motion } from 'motion/react';
+import { Analytics } from '@vercel/analytics/react';
 
 export default function App() {
   const [step, setStep] = useState<AppStep>('CAPTURE');
@@ -112,10 +113,13 @@ export default function App() {
   };
 
   return (
-    <AndroidFrame activeStep={step} onReset={step !== 'CAPTURE' ? handleReset : undefined}>
-      <AnimatePresence mode="wait">
-        {renderActiveStep()}
-      </AnimatePresence>
-    </AndroidFrame>
+    <>
+      <AndroidFrame activeStep={step} onReset={step !== 'CAPTURE' ? handleReset : undefined}>
+        <AnimatePresence mode="wait">
+          {renderActiveStep()}
+        </AnimatePresence>
+      </AndroidFrame>
+      <Analytics />
+    </>
   );
 }
