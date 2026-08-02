@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AppStep } from './types';
+import { AppStep, PrintQueueItem } from './types';
 import AndroidFrame from './components/AndroidFrame';
 import CaptureStep from './components/CaptureStep';
 import BackgroundStep from './components/BackgroundStep';
@@ -12,8 +12,7 @@ export default function App() {
   const [step, setStep] = useState<AppStep>('CAPTURE');
   const [rawImage, setRawImage] = useState<string | null>(null);
   const [processedImage, setProcessedImage] = useState<string | null>(null);
-  const [croppedPassport, setCroppedPassport] = useState<string | null>(null);
-  const [croppedStamp, setCroppedStamp] = useState<string | null>(null);
+  const [printQueue, setPrintQueue] = useState<PrintQueueItem[]>([]);
 
   // Transition handlers
   const handleImageCaptured = (imageSrc: string) => {
@@ -27,16 +26,29 @@ export default function App() {
   };
 
   const handleCropCompleted = (passportSrc: string, stampSrc: string) => {
-    setCroppedPassport(passportSrc);
-    setCroppedStamp(stampSrc);
+    const newItem: PrintQueueItem = {
+      id: `photo_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+      passportSrc,
+      stampSrc,
+      passportCount: 8,
+      stampCount: 12,
+      name: `Photo #${printQueue.length + 1}`,
+      timestamp: Date.now(),
+    };
+    setPrintQueue((prev) => [...prev, newItem]);
     setStep('PRINT');
+  };
+
+  const handleAddAnotherPhoto = () => {
+    setRawImage(null);
+    setProcessedImage(null);
+    setStep('CAPTURE');
   };
 
   const handleReset = () => {
     setRawImage(null);
     setProcessedImage(null);
-    setCroppedPassport(null);
-    setCroppedStamp(null);
+    setPrintQueue([]);
     setStep('CAPTURE');
   };
 
@@ -100,8 +112,9 @@ export default function App() {
             className="flex-1 flex flex-col"
           >
             <PrintStep
-              passportSrc={croppedPassport!}
-              stampSrc={croppedStamp!}
+              queue={printQueue}
+              onUpdateQueue={setPrintQueue}
+              onAddAnotherPhoto={handleAddAnotherPhoto}
               onBack={() => setStep('CROP')}
               onReset={handleReset}
             />
@@ -123,3 +136,4 @@ export default function App() {
     </>
   );
 }
+

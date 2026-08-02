@@ -54,3 +54,13 @@ export interface CroppedResult {
   passportSrc: string | null;
   stampSrc: string | null;
 }
+
+export interface PrintQueueItem {
+  id: string;
+  passportSrc: string;
+  stampSrc: string;
+  passportCount: number;
+  stampCount: number;
+  name: string;
+  timestamp: number;
+}

@@ -54,7 +54,11 @@ export default function CaptureStep({ onImageCaptured }: CaptureStepProps) {
       }
     } catch (err: any) {
       console.error('Error opening camera:', err);
-      setCameraError('Could not access camera. Please allow camera permissions or upload an image instead.');
+      if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError' || String(err).includes('Permission denied')) {
+        setCameraError('Camera permission denied. If you are viewing this app inside the AI Studio sandboxed preview frame, camera access is blocked by browser iframe security. Please open the app in a new tab to grant camera access, or upload an image directly.');
+      } else {
+        setCameraError(`Could not access camera (${err.message || err}). Please try opening in a new tab, allow permissions, or upload an image instead.`);
+      }
       setIsCameraActive(false);
     }
   };
@@ -334,9 +338,22 @@ export default function CaptureStep({ onImageCaptured }: CaptureStepProps) {
           /* Landing options */
           <div className="space-y-4">
             {cameraError && (
-              <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-3 rounded-xl text-xs flex items-start gap-2">
-                <AlertCircle size={16} className="shrink-0 mt-0.5" />
-                <span>{cameraError}</span>
+              <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-3.5 rounded-xl text-xs flex flex-col gap-2">
+                <div className="flex items-start gap-2">
+                  <AlertCircle size={16} className="shrink-0 mt-0.5 text-red-400" />
+                  <span className="leading-relaxed">{cameraError}</span>
+                </div>
+                {cameraError.includes('new tab') && (
+                  <a
+                    href={window.location.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="self-start inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg transition shadow-md active:scale-95 cursor-pointer select-none no-underline"
+                  >
+                    <Sparkles size={12} />
+                    Open App in New Tab
+                  </a>
+                )}
               </div>
             )}
 
