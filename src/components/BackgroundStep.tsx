@@ -20,7 +20,7 @@ export default function BackgroundStep({ imageSrc, onBackgroundProcessed, onBack
   const stageContainerRef = useRef<HTMLDivElement>(null);
 
   // Layout states
-  const [editMode, setEditMode] = useState<EditMode>('MAGNETIC_LASSO');
+  const [editMode, setEditMode] = useState<EditMode>('MAGIC_WAND');
   const [isLassoKeepMode, setIsLassoKeepMode] = useState<boolean>(false); // Keep selection or delete selection
   const [bgColor, setBgColor] = useState<string>('#ffffff'); // Default Indian Passport white background
   const [brushSize, setBrushSize] = useState<number>(20);

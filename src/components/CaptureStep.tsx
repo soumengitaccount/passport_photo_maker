@@ -1,6 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Camera, Image as ImageIcon, Sparkles, RefreshCw, AlertCircle } from 'lucide-react';
+import { Camera, Image as ImageIcon, Sparkles, RefreshCw, AlertCircle, MessageCircle } from 'lucide-react';
 import { motion } from 'motion/react';
+
+function WhatsAppIcon({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12.012 2c-5.506 0-9.989 4.478-9.989 9.984 0 1.762.459 3.481 1.332 4.992l-1.355 4.954 5.085-1.331c1.46.797 3.109 1.218 4.787 1.218 5.513 0 9.998-4.48 9.998-9.986s-4.485-9.982-9.998-9.982zm0 18.232c-1.503 0-2.981-.403-4.278-1.168l-.307-.182-3.178.832.848-3.097-.2-.317c-.843-1.339-1.288-2.894-1.288-4.487 0-4.551 3.704-8.256 8.257-8.256 4.551 0 8.256 3.705 8.256 8.256 0 4.552-3.705 8.257-8.256 8.257zm4.527-6.183c-.248-.124-1.467-.724-1.695-.807-.228-.083-.394-.124-.56.124-.166.248-.642.807-.787.973-.145.166-.29.186-.538.062-.248-.124-1.048-.386-1.996-1.231-.738-.658-1.236-1.471-1.381-1.719-.145-.248-.015-.382.109-.505.111-.11.248-.29.372-.435.124-.145.166-.248.248-.414.083-.166.041-.311-.021-.435-.062-.124-.56-1.348-.767-1.846-.201-.484-.405-.418-.56-.426-.145-.008-.311-.008-.476-.008-.166 0-.435.062-.663.311-.228.248-.87.85-.87 2.073 0 1.223.89 2.404 1.014 2.57.124.166 1.752 2.675 4.244 3.752.593.256 1.056.409 1.417.524.596.19 1.138.163 1.567.099.479-.072 1.467-.6 1.674-1.18.207-.58.207-1.077.145-1.18-.062-.103-.228-.186-.476-.31z" />
+    </svg>
+  );
+}
 
 interface CaptureStepProps {
   onImageCaptured: (imageSrc: string) => void;
@@ -245,9 +253,23 @@ export default function CaptureStep({ onImageCaptured }: CaptureStepProps) {
   return (
     <div className="flex flex-col flex-1 p-5 select-none justify-between">
       {/* Step Header */}
-      <div className="text-center mb-4">
-        <span className="text-xs font-bold tracking-widest text-indigo-400 uppercase">Step 1 of 4</span>
-        <h2 className="text-xl font-bold text-white tracking-tight mt-1">Get Portrait Photo</h2>
+      <div className="text-center mb-3 relative">
+        <div className="flex items-center justify-between mb-1">
+          <span className="text-xs font-bold tracking-widest text-indigo-400 uppercase">Step 1 of 4</span>
+          
+          {/* WhatsApp Direct Contact Badge */}
+          <a
+            href="https://wa.me/918420882476?text=Hello%2C%20I%20need%20help%20with%20Passport%20Photo%20Maker"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Chat on WhatsApp: 8420882476"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/25 transition text-[11px] font-bold no-underline cursor-pointer shadow-sm hover:scale-105 active:scale-95"
+          >
+            <WhatsAppIcon className="w-3.5 h-3.5 text-emerald-400" />
+            <span>WhatsApp: 8420882476</span>
+          </a>
+        </div>
+        <h2 className="text-xl font-bold text-white tracking-tight">Get Portrait Photo</h2>
         <p className="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
           Capture with your camera or select from your gallery. Standard lighting works best!
         </p>
@@ -431,10 +453,32 @@ export default function CaptureStep({ onImageCaptured }: CaptureStepProps) {
         )}
       </div>
 
-      {/* Safety Guideline Box */}
-      <div className="mt-4 p-3 bg-slate-900/60 border border-slate-850 rounded-xl text-[11px] text-slate-500 flex items-center gap-2">
-        <Sparkles size={14} className="text-indigo-400 shrink-0" />
-        <span>For passport size, try to stand against a plain wall with natural frontal lighting.</span>
+      {/* Safety Guideline Box & WhatsApp Contact Footer */}
+      <div className="mt-3 space-y-2">
+        <a
+          href="https://wa.me/918420882476?text=Hi%2C%20I%20am%20using%20Passport%20Photo%20Maker%20and%20need%20assistance"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full bg-emerald-500/10 border border-emerald-500/25 hover:bg-emerald-500/20 p-2.5 rounded-xl flex items-center justify-between text-emerald-400 transition no-underline cursor-pointer group"
+        >
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
+              <WhatsAppIcon className="w-4 h-4 text-emerald-400" />
+            </div>
+            <div>
+              <div className="text-xs font-bold text-emerald-300">WhatsApp Support / Contact</div>
+              <div className="text-[10px] text-emerald-400/80 font-mono">+91 8420882476</div>
+            </div>
+          </div>
+          <span className="text-xs font-semibold text-emerald-400 bg-emerald-500/20 px-2.5 py-1 rounded-lg border border-emerald-500/30">
+            Chat Now →
+          </span>
+        </a>
+
+        <div className="p-2.5 bg-slate-900/60 border border-slate-850 rounded-xl text-[11px] text-slate-500 flex items-center gap-2">
+          <Sparkles size={14} className="text-indigo-400 shrink-0" />
+          <span>For passport size, try to stand against a plain wall with natural frontal lighting.</span>
+        </div>
       </div>
     </div>
   );

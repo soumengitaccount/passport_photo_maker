@@ -25,15 +25,28 @@ export default function App() {
     setStep('CROP');
   };
 
-  const handleCropCompleted = (passportSrc: string, stampSrc: string) => {
+  const handleCropCompleted = (
+    passportSrc: string,
+    stampSrc: string,
+    passportWidthMm?: number,
+    passportHeightMm?: number,
+    stampWidthMm?: number,
+    stampHeightMm?: number,
+    countryName?: string
+  ) => {
     const newItem: PrintQueueItem = {
       id: `photo_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
       passportSrc,
       stampSrc,
       passportCount: 8,
       stampCount: 12,
-      name: `Photo #${printQueue.length + 1}`,
+      name: countryName ? `${countryName}` : `Photo #${printQueue.length + 1}`,
       timestamp: Date.now(),
+      passportWidthMm: passportWidthMm || 35,
+      passportHeightMm: passportHeightMm || 45,
+      stampWidthMm: stampWidthMm || 20,
+      stampHeightMm: stampHeightMm || 25,
+      countryName: countryName || 'Passport',
     };
     setPrintQueue((prev) => [...prev, newItem]);
     setStep('PRINT');

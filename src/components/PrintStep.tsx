@@ -108,12 +108,12 @@ export default function PrintStep({
     onUpdateQueue(updated);
   };
 
-  // Calculations for 35x45mm photos (A4 size: 210x297mm)
+  // Calculations for country specific photos (A4 size: 210x297mm)
   const marginMm = 10; // Page padding is 10mm each side
   const usableWidthMm = 210 - (2 * marginMm); // 190mm
   const usableHeightMm = 297 - (2 * marginMm); // 277mm
-  const photoWidthMm = 35;
-  const photoHeightMm = 45;
+  const photoWidthMm = selectedPhoto?.passportWidthMm || 35;
+  const photoHeightMm = selectedPhoto?.passportHeightMm || 45;
 
   const maxPhotosPerRow = Math.floor((usableWidthMm + photoGap) / (photoWidthMm + photoGap));
   const maxRowsPerPage = Math.floor((usableHeightMm + photoGap) / (photoHeightMm + photoGap));
@@ -183,38 +183,42 @@ export default function PrintStep({
             style={{ gap: `${photoGap}mm` }}
           >
             {/* Passport Size Photos from all queued items */}
-            {activeQueue.flatMap((item) =>
-              Array.from({ length: item.passportCount }).map((_, copyIdx) => (
+            {activeQueue.flatMap((item) => {
+              const pW = item.passportWidthMm || 35;
+              const pH = item.passportHeightMm || 45;
+              return Array.from({ length: item.passportCount }).map((_, copyIdx) => (
                 <div
                   key={`print-pass-${item.id}-${copyIdx}`}
                   className="relative overflow-hidden bg-white shrink-0"
                   style={{
-                    width: '35mm',
-                    height: '45mm',
+                    width: `${pW}mm`,
+                    height: `${pH}mm`,
                     border: showCutLines ? '0.2mm solid #d1d5db' : 'none',
                   }}
                 >
                   <img src={item.passportSrc} alt={`${item.name} passport copy`} className="w-full h-full object-cover" />
                 </div>
-              ))
-            )}
+              ));
+            })}
 
             {/* Stamp Size Photos from all queued items */}
-            {activeQueue.flatMap((item) =>
-              Array.from({ length: item.stampCount }).map((_, copyIdx) => (
+            {activeQueue.flatMap((item) => {
+              const sW = item.stampWidthMm || 20;
+              const sH = item.stampHeightMm || 25;
+              return Array.from({ length: item.stampCount }).map((_, copyIdx) => (
                 <div
                   key={`print-stamp-${item.id}-${copyIdx}`}
                   className="relative overflow-hidden bg-white shrink-0"
                   style={{
-                    width: '20mm',
-                    height: '25mm',
+                    width: `${sW}mm`,
+                    height: `${sH}mm`,
                     border: showCutLines ? '0.2mm solid #d1d5db' : 'none',
                   }}
                 >
                   <img src={item.stampSrc} alt={`${item.name} stamp copy`} className="w-full h-full object-cover" />
                 </div>
-              ))
-            )}
+              ));
+            })}
           </div>
         </div>,
         document.body
@@ -307,38 +311,42 @@ export default function PrintStep({
               style={{ gap: `${photoGap * (280 / 210)}px` }}
             >
               {/* Render all queued Passport copies */}
-              {activeQueue.flatMap((item) =>
-                Array.from({ length: item.passportCount }).map((_, copyIdx) => (
+              {activeQueue.flatMap((item) => {
+                const pW = item.passportWidthMm || 35;
+                const pH = item.passportHeightMm || 45;
+                return Array.from({ length: item.passportCount }).map((_, copyIdx) => (
                   <div
                     key={`pass-prev-${item.id}-${copyIdx}`}
                     className="bg-slate-200 overflow-hidden shrink-0 relative"
                     style={{
-                      width: `${35 * (280 / 210)}px`,
-                      height: `${45 * (280 / 210)}px`,
+                      width: `${pW * (280 / 210)}px`,
+                      height: `${pH * (280 / 210)}px`,
                       border: showCutLines ? '0.5px solid #cbd5e1' : 'none',
                     }}
                   >
                     <img src={item.passportSrc} alt="Preview copy" className="w-full h-full object-cover" />
                   </div>
-                ))
-              )}
+                ));
+              })}
 
               {/* Render all queued Stamp copies */}
-              {activeQueue.flatMap((item) =>
-                Array.from({ length: item.stampCount }).map((_, copyIdx) => (
+              {activeQueue.flatMap((item) => {
+                const sW = item.stampWidthMm || 20;
+                const sH = item.stampHeightMm || 25;
+                return Array.from({ length: item.stampCount }).map((_, copyIdx) => (
                   <div
                     key={`stamp-prev-${item.id}-${copyIdx}`}
                     className="bg-slate-200 overflow-hidden shrink-0 relative"
                     style={{
-                      width: `${20 * (280 / 210)}px`,
-                      height: `${25 * (280 / 210)}px`,
+                      width: `${sW * (280 / 210)}px`,
+                      height: `${sH * (280 / 210)}px`,
                       border: showCutLines ? '0.5px solid #cbd5e1' : 'none',
                     }}
                   >
                     <img src={item.stampSrc} alt="Preview copy" className="w-full h-full object-cover" />
                   </div>
-                ))
-              )}
+                ));
+              })}
             </div>
 
             {/* Simulated Watermark */}
@@ -384,7 +392,7 @@ export default function PrintStep({
               <div className="grid grid-cols-2 gap-2">
                 <div className="bg-slate-900 px-2.5 py-1.5 rounded-lg border border-slate-800">
                   <div className="flex justify-between text-[10px] text-slate-300 font-bold mb-1">
-                    <span>Passport (35x45)</span>
+                    <span>Passport ({selectedPhoto.passportWidthMm || 35}×{selectedPhoto.passportHeightMm || 45} mm)</span>
                     <span className="text-indigo-400">{selectedPhoto.passportCount}</span>
                   </div>
                   <input
@@ -399,7 +407,7 @@ export default function PrintStep({
 
                 <div className="bg-slate-900 px-2.5 py-1.5 rounded-lg border border-slate-800">
                   <div className="flex justify-between text-[10px] text-slate-300 font-bold mb-1">
-                    <span>Stamp (20x25)</span>
+                    <span>Stamp ({selectedPhoto.stampWidthMm || 20}×{selectedPhoto.stampHeightMm || 25} mm)</span>
                     <span className="text-indigo-400">{selectedPhoto.stampCount}</span>
                   </div>
                   <input

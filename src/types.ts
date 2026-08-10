@@ -63,4 +63,9 @@ export interface PrintQueueItem {
   stampCount: number;
   name: string;
   timestamp: number;
+  passportWidthMm?: number;
+  passportHeightMm?: number;
+  stampWidthMm?: number;
+  stampHeightMm?: number;
+  countryName?: string;
 }
