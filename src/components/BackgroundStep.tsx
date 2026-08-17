@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { 
   Scissors, Hand, Trash2, RotateCcw, RotateCw, ZoomIn, ZoomOut, 
-  Paintbrush, Sliders, Check, HelpCircle, Palette, ToggleLeft, ToggleRight
+  Paintbrush, Sliders, Check, HelpCircle, Palette, ToggleLeft, ToggleRight,
+  ExternalLink, Sparkles
 } from 'lucide-react';
 import { Point, EditMode, BackgroundState } from '../types';
 import { findMagneticSnapPoint, performMagicWand, applyLassoCut, applyBgColorToDataUrl } from '../utils/imageUtils';
@@ -476,11 +477,41 @@ export default function BackgroundStep({ imageSrc, onBackgroundProcessed, onBack
 
   return (
     <div className="flex flex-col flex-1 select-none overflow-hidden h-full">
+      {/* Top Banner: External AI Background Remover */}
+      <a
+        href="https://ais-pre-5l6cnxqrjijfjadlkmfffe-199113885584.asia-southeast1.run.app/"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Remove background of image - Open external AI tool"
+        className="bg-gradient-to-r from-indigo-950 via-indigo-900/90 to-purple-950/90 border-b border-indigo-500/30 px-3.5 py-2 flex items-center justify-between gap-2.5 text-white transition-colors hover:bg-indigo-900/60 group shrink-0 no-underline shadow-sm"
+      >
+        <div className="flex items-center gap-2 min-w-0">
+          <div className="w-6 h-6 rounded-md bg-indigo-500/25 border border-indigo-400/40 flex items-center justify-center text-indigo-300 shrink-0 group-hover:scale-105 transition-transform">
+            <Sparkles size={13} className="text-indigo-300" />
+          </div>
+          <div className="min-w-0">
+            <div className="text-xs font-bold text-indigo-100 flex items-center gap-1.5 truncate">
+              <span>Remove background of image</span>
+              <span className="text-[9px] bg-indigo-500/30 text-indigo-200 px-1.5 py-0.2 rounded font-semibold border border-indigo-400/30">
+                AI Tool
+              </span>
+            </div>
+            <p className="text-[10px] text-slate-300/80 truncate hidden sm:block">
+              One-click instant automated background removal
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center gap-1 text-[10px] font-bold text-indigo-300 bg-indigo-500/20 hover:bg-indigo-500/30 border border-indigo-400/30 px-2 py-0.5 rounded-lg shrink-0 transition-colors">
+          <span>Open Link</span>
+          <ExternalLink size={11} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+        </div>
+      </a>
+
       {/* Step Header */}
-      <div className="bg-slate-900 border-b border-slate-800 p-4 shrink-0 flex items-center justify-between">
+      <div className="bg-slate-900 border-b border-slate-800 p-3.5 shrink-0 flex items-center justify-between">
         <div>
           <span className="text-[10px] font-bold tracking-widest text-indigo-400 uppercase">Step 2 of 4</span>
-          <h2 className="text-base font-bold text-white tracking-tight">Background Workshop</h2>
+          <h2 className="text-base font-bold text-white tracking-tight">Remove Background of Image</h2>
         </div>
         <div className="flex items-center gap-1.5">
           <button

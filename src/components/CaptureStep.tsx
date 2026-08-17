@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Camera, Image as ImageIcon, Sparkles, RefreshCw, AlertCircle, MessageCircle } from 'lucide-react';
+import { Camera, Image as ImageIcon, Sparkles, RefreshCw, AlertCircle, MessageCircle, ExternalLink } from 'lucide-react';
 import { motion } from 'motion/react';
 
 function WhatsAppIcon({ className = "w-4 h-4" }: { className?: string }) {
@@ -251,9 +251,40 @@ export default function CaptureStep({ onImageCaptured }: CaptureStepProps) {
   };
 
   return (
-    <div className="flex flex-col flex-1 p-5 select-none justify-between">
-      {/* Step Header */}
-      <div className="text-center mb-3 relative">
+    <div className="flex flex-col flex-1 select-none justify-between overflow-hidden">
+      {/* Top Banner: External AI Background Remover */}
+      <a
+        href="https://ais-pre-5l6cnxqrjijfjadlkmfffe-199113885584.asia-southeast1.run.app/"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="Remove background of image - Open external AI tool"
+        className="bg-gradient-to-r from-indigo-950 via-indigo-900/90 to-purple-950/90 border-b border-indigo-500/30 px-3.5 py-2 flex items-center justify-between gap-2.5 text-white transition-colors hover:bg-indigo-900/60 group shrink-0 no-underline shadow-sm"
+      >
+        <div className="flex items-center gap-2 min-w-0">
+          <div className="w-6 h-6 rounded-md bg-indigo-500/25 border border-indigo-400/40 flex items-center justify-center text-indigo-300 shrink-0 group-hover:scale-105 transition-transform">
+            <Sparkles size={13} className="text-indigo-300" />
+          </div>
+          <div className="min-w-0">
+            <div className="text-xs font-bold text-indigo-100 flex items-center gap-1.5 truncate">
+              <span>Remove background of image</span>
+              <span className="text-[9px] bg-indigo-500/30 text-indigo-200 px-1.5 py-0.2 rounded font-semibold border border-indigo-400/30">
+                AI Tool
+              </span>
+            </div>
+            <p className="text-[10px] text-slate-300/80 truncate hidden sm:block">
+              One-click instant automated background removal
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center gap-1 text-[10px] font-bold text-indigo-300 bg-indigo-500/20 hover:bg-indigo-500/30 border border-indigo-400/30 px-2 py-0.5 rounded-lg shrink-0 transition-colors">
+          <span>Open Link</span>
+          <ExternalLink size={11} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+        </div>
+      </a>
+
+      <div className="flex flex-col flex-1 p-5 justify-between overflow-y-auto">
+        {/* Step Header */}
+        <div className="text-center mb-3 relative">
         <div className="flex items-center justify-between mb-1">
           <span className="text-xs font-bold tracking-widest text-indigo-400 uppercase">Step 1 of 4</span>
           
@@ -480,6 +511,7 @@ export default function CaptureStep({ onImageCaptured }: CaptureStepProps) {
           <span>For passport size, try to stand against a plain wall with natural frontal lighting.</span>
         </div>
       </div>
+    </div>
     </div>
   );
 }
